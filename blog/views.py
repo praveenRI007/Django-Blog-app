@@ -41,6 +41,9 @@ def PostDetailView(request,id):
 @login_required()
 def PostCreateView(request):
     if request.method == 'POST':
+        if request.POST['author'] != str(request.user.id):
+            messages.success(request,'permission denied , invalid user')
+            return redirect('blog-home')
         form = PostCreationForm(request.POST)
         form_u = form.save(commit=False)
         form_u.date_posted = str(datetime.now())
@@ -57,10 +60,13 @@ def PostCreateView(request):
 @api_view(['GET','POST'])
 @login_required()
 def PostUpdateView(request,id):
-    if request.method == 'POST':
-        curr_form = Post.objects.get(id=id)
-        form = PostCreationForm(instance=curr_form)
 
+    if request.method == 'POST':
+        if request.POST['author'] != str(request.user.id):
+            messages.success(request,'permission denied , invalid user')
+            return redirect('blog-home')
+        curr_form = Post.objects.get(id=id)
+        #form = PostCreationForm(instance=curr_form)
         form = PostCreationForm(request.POST,instance=curr_form)
         form_u = form.save(commit=False)
         form_u.date_posted = str(datetime.now())
@@ -70,6 +76,7 @@ def PostUpdateView(request,id):
             return redirect('blog-home')
 
     else:
+
         print(id)
         curr_form = Post.objects.get(id=id)
         form = PostCreationForm(instance=curr_form)
