@@ -6,10 +6,13 @@
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="{% url 'posts-by-user' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted | date:"F d, Y" }}</small>
+              <small class="text-muted">{{ post.date_posted | date:"F d, Y" }} {{ post.date_posted | time:"h:i a" }}</small>
             </div>
             <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <p class="article-content">{{ post.content |slice:"0:300" |add:"..." }}
+            <a href="{% url 'post-detail' post.id %}" style="text-decoration:none">Read more</a>
+            </p>
+
           </div>
         </article>
     {% endfor %}

@@ -155,4 +155,10 @@ def logout(request):
     return response
 
 
+@api_view(['GET', 'POST'])
+@login_required()
+def resetpassword(request):
+    return render(request,'users/resetpassword.html')
+
+
 

@@ -40,7 +40,7 @@ def PostbyUserView(request,username):
     paginator = Paginator(posts, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, 'blog/post_by_user.html', {"page_obj": page_obj, "is_paginated": True})
+    return render(request, 'blog/post_by_user.html', {"page_obj": page_obj, "is_paginated": True,"username": username})
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
