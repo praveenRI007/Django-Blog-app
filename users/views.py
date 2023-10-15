@@ -4,7 +4,7 @@ import asyncio
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm , LoginForm , ProfileUpdateForm , UserUpdateForms
+from .forms import UserRegisterForm , LoginForm , ProfileUpdateForm , UserUpdateForms , MyChangeFormPassword
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -95,6 +95,7 @@ def login_post(request):
     }
     return response
 
+@api_view(['GET','POST'])
 @permission_classes([AllowAny])
 @login_required()
 def profile(request):
@@ -158,7 +159,17 @@ def logout(request):
 @api_view(['GET', 'POST'])
 @login_required()
 def resetpassword(request):
-    return render(request,'users/resetpassword.html')
+    if request.method == 'POST':
+        form_edit_password = MyChangeFormPassword(user=request.user,data=request.POST)
+        if form_edit_password.is_valid():
+            form_edit_password.save()
+            messages.success(request,'Password updated')
+            return redirect('blog-home')
+        else:
+            messages.success(request, 'some error occured while changing password , please check if passwords match and if you have entered correct old password')
+            return redirect('blog-home')
+    else:
+        return render(request, 'users/resetpassword.html')
 
 
 

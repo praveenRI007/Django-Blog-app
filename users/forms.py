@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm , UserChangeForm
+from django.contrib.auth.forms import UserCreationForm , UserChangeForm , PasswordChangeForm
 from .models import Profile
 
 
@@ -11,6 +11,8 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+class MyChangeFormPassword(PasswordChangeForm):
+    pass
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="username")
