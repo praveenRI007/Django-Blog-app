@@ -23,11 +23,12 @@ from users import views as user_views
 from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt import views as jwt_views
 from django.conf.urls.static import static
-
+from django.shortcuts import redirect
 
 
 urlpatterns = [
-    path('', debug.default_urlconf),
+    #path('', debug.default_urlconf),
+    path('',lambda req: redirect('/blog/')),
     path('admin/', admin.site.urls),
     path('register/',user_views.register,name="register"),
     path('profile/', user_views.profile, name="profile"),
